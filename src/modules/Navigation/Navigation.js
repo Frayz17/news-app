@@ -1,8 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
-import { withRouter, useHistory, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
+import { getState } from 'services/Store';
 import Block from 'components/Block';
 import Typography from 'components/Typography';
 import { ButtonLink } from 'components/Button';
@@ -28,39 +29,36 @@ const NavigationLink = styled(ButtonLink)`
   }
 `;
 
-export default withRouter(
-  connect()(
-    React.memo(function Navigation({ location }) {
-      const isActiveFlag = location.pathname === '/';
-      console.log('dfgdfg');
-      return (
-        <StyledBlockFlex>
-          <NavigationLink
-            disabled={isActiveFlag}
-            to={'/'}
-            style={
-              isActiveFlag
-                ? {
-                    backgroundColor: 'ligthgrey',
-                    color: 'green'
-                  }
-                : {}
-            }
-          >
-            <Typography>Home</Typography>
-          </NavigationLink>
+export default connect()(
+  React.memo(function Navigation() {
+    const {
+      reducerNavigation: { links }
+    } = getState();
 
-          <NavigationLink to={'/popular'}>
-            <Typography>Popular</Typography>
-          </NavigationLink>
-          <NavigationLink to={'/Sport'}>
-            <Typography>Sport</Typography>
-          </NavigationLink>
-          <NavigationLink to={'/Art'}>
-            <Typography>Art</Typography>
-          </NavigationLink>
-        </StyledBlockFlex>
-      );
-    })
-  )
+    const location = useLocation();
+
+    return (
+      <StyledBlockFlex>
+        {links.map(({ path, title }, i) => {
+          const isActiveFlag = location.pathname === path;
+          return (
+            <NavigationLink
+              key={i}
+              disabled={isActiveFlag}
+              to={path}
+              style={
+                isActiveFlag
+                  ? {
+                      backgroundColor: 'lightblue',
+                      color: 'blue'
+                    }
+                  : {}
+              }>
+              <Typography>{title}</Typography>
+            </NavigationLink>
+          );
+        })}
+      </StyledBlockFlex>
+    );
+  })
 );

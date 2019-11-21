@@ -3,7 +3,7 @@ export default (
     links: [
       {
         path: '/',
-        title: 'Home'
+        title: 'Main'
       },
       {
         path: '/popular',
