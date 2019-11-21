@@ -1,8 +1,13 @@
 import React from 'react';
 import styled from 'styled-components';
-import Block from 'components/Block';
+import { connect } from 'react-redux';
+import { withRouter, useHistory, useLocation } from 'react-router-dom';
 
-const NavBlock = styled(Block)`
+import Block from 'components/Block';
+import Typography from 'components/Typography';
+import { ButtonLink } from 'components/Button';
+
+const StyledBlockFlex = styled(Block)`
   max-width: 960px;
   margin: auto;
   display: flex;
@@ -12,7 +17,7 @@ const NavBlock = styled(Block)`
   border-bottom: 1px solid grey;
 `;
 
-const NavItem = styled(Block)`
+const NavigationLink = styled(ButtonLink)`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -23,12 +28,39 @@ const NavItem = styled(Block)`
   }
 `;
 
-export default function Navigation() {
-  return (
-    <NavBlock>
-      <NavItem>Popular</NavItem>
-      <NavItem>Sport</NavItem>
-      <NavItem>Art</NavItem>
-    </NavBlock>
-  );
-}
+export default withRouter(
+  connect()(
+    React.memo(function Navigation({ location }) {
+      const isActiveFlag = location.pathname === '/';
+      console.log('dfgdfg');
+      return (
+        <StyledBlockFlex>
+          <NavigationLink
+            disabled={isActiveFlag}
+            to={'/'}
+            style={
+              isActiveFlag
+                ? {
+                    backgroundColor: 'ligthgrey',
+                    color: 'green'
+                  }
+                : {}
+            }
+          >
+            <Typography>Home</Typography>
+          </NavigationLink>
+
+          <NavigationLink to={'/popular'}>
+            <Typography>Popular</Typography>
+          </NavigationLink>
+          <NavigationLink to={'/Sport'}>
+            <Typography>Sport</Typography>
+          </NavigationLink>
+          <NavigationLink to={'/Art'}>
+            <Typography>Art</Typography>
+          </NavigationLink>
+        </StyledBlockFlex>
+      );
+    })
+  )
+);
