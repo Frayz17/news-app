@@ -32,7 +32,7 @@ const NavigationLink = styled(ButtonLink)`
 export default connect()(
   React.memo(function Navigation() {
     const {
-      reducerNavigation: { links }
+      navigation: { links }
     } = getState();
 
     const location = useLocation();
@@ -53,7 +53,8 @@ export default connect()(
                       color: 'blue'
                     }
                   : {}
-              }>
+              }
+            >
               <Typography>{title}</Typography>
             </NavigationLink>
           );
